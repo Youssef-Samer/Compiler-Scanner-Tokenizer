@@ -1,0 +1,87 @@
+﻿@model WebApplication1.Models.Scanner
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://codemirror.net/lib/codemirror.css">
+    <link rel="stylesheet" type="text/css" href="https://codemirror.net/addon/hint/show-hint.css">
+    <script type="text/javascript" src="https://codemirror.net/lib/codemirror.js"></script>
+    <script type="text/javascript" src="https://codemirror.net/addon/hint/show-hint.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                extraKeys: { "Ctrl-Space": "autocomplete" },
+                lineNumbers: true,
+
+
+
+
+            })
+            editor.on('beforeSelectionChange', function () {
+                var options = {
+                    hint: function () {
+                        return {
+                            from: editor.getDoc().getCursor(),
+                            to: editor.getDoc().getCursor(),
+                            list: ['If', 'Else', "Iow", "SIow", "Chlo", "Chain", "Iowf", "SIowf", "Worthless", "Loopwhen", "Iteratewhen", "Turnback", "Stop", "Loli", "Include"]
+                        }
+                    }
+                };
+                editor.showHint(options);
+            });
+        }
+
+    </script>
+
+    <style>
+        .button {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #f4511e;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 20px;
+            padding: 10px;
+            width: 100px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+            .button span {
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                transition: 0.5s;
+            }
+
+            .button span:after {
+                    content: '\00bb';
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: -20px;
+                    transition: 0.5s;
+                }
+
+    </style>
+</head>
+
+<body>
+    <form asp-controller="Compiler" asp-action="Index" method="post">
+
+        <textarea id="code" asp-for="@Model.ScannedText"  rows="25" cols="160"></textarea>
+        <br>
+            <button class="button" type="submit">Scan</button>
+
+    </form>
+    <br>
+
+    <h4>Returned Tokens: </h4>
+    <h5 style="white-space: pre-line">@ViewData["ReturnedTokens"]</h5>
+    <br>
+    <h4>Total Number Of Errors: </h4>
+    <h5>@ViewData["NumberOfErrors"]</h5>
+    <br>
+</body>
+</html>
